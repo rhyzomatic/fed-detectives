@@ -56,6 +56,7 @@ for l in base_links:
 
         speech = {"title": title,
                   "date": date,
+                  "url": link,
                   "text": speech_text}
 
         speeches.append(speech)
