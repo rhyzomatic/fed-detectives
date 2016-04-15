@@ -1,5 +1,6 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
+import pickle
 
 html = urlopen("https://www.chicagofed.org/publications/speeches/index")
 soup = BeautifulSoup(html, 'html.parser')
@@ -53,8 +54,13 @@ for l in base_links:
 
         print(date, title)
 
-        speeches.append((title, date, speech_text))
+        speech = {"title": title,
+                  "date": date,
+                  "text": speech_text}
+
+        speeches.append(speech)
 
 
+pickle.dump(speeches, open("chicagofed_dump.pkl", "wb"))
 
 
