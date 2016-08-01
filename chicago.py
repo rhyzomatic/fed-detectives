@@ -1,6 +1,9 @@
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import pickle
+import re
+
+bad_dates = []
 
 html = urlopen("https://www.chicagofed.org/publications/speeches/index")
 soup = BeautifulSoup(html, 'html.parser')
@@ -50,7 +53,10 @@ for l in base_links:
             if (child.name in ("p", "h3")):
                 speech_text += child.get_text() + " "
 
-        date = link[28:36] # TODO: make this general and assert it's date
+        date = link[23:33] # TODO: make this general and assert it's date
+        date = date.replace("/", "-")
+        if re.search('[a-zA-Z]', date) or date[-1] == "-":
+            bad_dates.append((date, len(speeches)))
 
         print(date, title)
 
@@ -62,6 +68,14 @@ for l in base_links:
         speeches.append(speech)
 
 
-pickle.dump(speeches, open("chicagofed_dump.pkl", "wb"))
+# this just manually fixes all the bad dates
+speeches[6]["date"] = "2015-11-12"
+speeches[7]["date"] = "2015-10-12"
+speeches[8]["date"] = "2015-12-09"
+speeches[9]["date"] = "2015-09-28"
+speeches[11]["date"] = "2015-05-18"
+speeches[86]["date"] = "2008-09-19"
+
+pickle.dump(speeches, open("./data/chicagofed_dump.pkl", "wb"))
 
 

@@ -26,7 +26,7 @@ for year in range(2006, 2017):
 
         try:
             title_div = soup.findAll("h2", {"class": "typeHighlight1"})[0]
-            print title_div
+            print(title_div)
         
         except IndexError:
             bad_links.append(url)
@@ -48,6 +48,7 @@ for year in range(2006, 2017):
                     speech_text += child.get_text() + " "
 
         if link[24] == int:                
+            print("hi")
             date = link[19:25] # TODO: make this general and assert it's date
             date = date[:2] + "-" + date[2:4] + "-" + date[4:]
             print(date, title)
@@ -63,4 +64,4 @@ for year in range(2006, 2017):
 
         speeches.append(speech)
 
-pickle.dump(speeches, open("atlantafed_dump.pkl", "wb"))
+pickle.dump(speeches, open("./data/atlantafed_dump.pkl", "wb"))
